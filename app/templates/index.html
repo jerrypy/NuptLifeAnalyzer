@@ -1,0 +1,290 @@
+{% extends "base.html" %}
+
+{% block title %}邮迹 | 南邮时光机{% endblock %}
+{% block metas %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="author" content="Jiang Jie">
+    <meta name="keywords" content="南邮,南京邮电大学,邮迹,南邮时光机,大学时光机,高校时光机,时光机">
+    <meta name="description" content="邮迹可能是国内高校第一个时光机，跟着邮迹一起品味大学里我们最美好的时光。你的举手投足，南邮都会记得。">
+    <meta name="copyright" content="OSSE">
+{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<link href='http://cdn.webfont.youziku.com/webfonts/nomal/27351/19505/579352b5f629d80be436871c.css' rel='stylesheet' type='text/css' />
+<link rel="stylesheet" href="http://static.jerrywin.com/youji/css/sweetalert.css">
+<link rel="stylesheet" href="http://static.jerrywin.com/youji/css/style.css">
+
+{% endblock %}
+
+{% block body %}
+<div id="preloader" class="preloader">
+    <h1 class="logo">邮迹</h1>
+    <h2 class="story">南邮时光机</h2>
+    <div class="percent">正在加载 <span>0%</span></div>
+</div>
+
+<div id="wrapper" class="wrapper" style="display: none">
+    <div class="loginPage">
+        <div class="loginWrapper">
+            <div class="title">
+                <p class="css4bca45d236ad7">邮迹</p>
+            </div>
+            <div class="login-form">
+                <form class="form form-horizontal" method="post" role="form" id="zf_form">
+                    {{ form.hidden_tag() }}
+                    <input type="text" placeholder="正方账号" class="form-control" id="student_id" name="student_id">
+                    <input type="password" placeholder="正方密码" class="form-control" id="password" name="password">
+                    <input type="button" class="btn btn-success" id="zf_login" value="开始">
+                    <input type="button" class="btn btn-success" id="try" value="只是个过客？">
+                </form>
+            </div>
+            <div class="footer">
+                <a href="#" id="privacy">隐私条款</a>
+            </div>
+            <div class="modal fade bs-example-modal-sm" id="modal1" tabindex="-1" role="alertdialog" aria-labelledby="mymodal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">隐私条款</h4>
+                        </div>
+                        <div class="modal-body">
+                            <section>
+                                <h5 style="color:orangered">我们收集哪些信息</h5>
+                                <p>该系统会爬取您在正方系统中的个人信息（身份证号码只取后六位用于智慧校园系统默认密码登录）、成绩、等级考试成绩和课表，图书馆系统中的个人信息、当前借阅记录、书评记录、检索历史、罚款明细、荐购记录、预约信息以及借阅历史，智慧校园系统中校园卡消费记录。</p>
+                                <h5 style="color:orangered">关于您的个人信息</h5>
+                                <p>我们承诺绝不存储您的密码信息以及不透露任何用户数据，但对于传输过程中的信息泄漏概不负责，请在安全的网络环境下使用。</p>
+                                <h5 style="color:orangered">联系我们</h5>
+                                <p>如果您有任何问题，请联系：root@jerrywin.com。</p>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="loader">
+
+            </div>
+    </div>
+
+</div>
+
+<!-- 竖屏检测 -->
+<div id="landscape_hinter">
+    <div class="hinter_phone"></div>
+    <div class="hinter_rotate"></div>
+    <div class="hinter_text">竖屏体验效果更佳</div>
+</div>
+
+<!-- slider加载器 -->
+<div id="loading_text" style="display: none;">
+    <p>加载图片中，已完成<span>0%</span></p>
+</div>
+<!-- 背景音乐 -->
+<a href="javascript:;" id="bgMusicContr" class="music"></a>
+<audio id="bgMusic" src="http://static.jerrywin.com/youji/music/nupt_mid.mp3" loop preload="auto"></audio>
+
+<script id="tmpl" type="text/tmpl">
+<!-- 登录页开始 -->
+
+<!-- 登录页结束 -->
+{% raw %}
+<div class="page page1">
+
+    <div id="text1">
+   <p id="name">{{=it.zf_info['student_name']}}同学，</p>
+   <p id="days">今天是你来到南邮的第 <span id="days_num">{{=it.delta}}</span> 天。</p>
+        <p id="text1_line1">让邮迹带着你，</p>
+        <p id="text1_line2">回忆起每一场晴雨，</p>
+        <p id="text1_line3">每一分感动。</p>
+        </div>
+</div>
+
+<div class="page page2">
+<div id="gate"></div>
+    <div id="balloon"></div>
+    {{? it.zf_info['gender'] == '男'}}
+    <div id="selfie_man" class="selfie"></div>
+    {{??}}
+    <div id="selfie_woman" class="selfie"></div>
+    {{?}}
+    <div id="cloud1"></div>
+    <div id="cloud2"></div>
+    {{? it.weather['weather1'].indexOf('晴') > 0}}
+    <div id="sun"></div>
+    {{?? it.weather['weather1'].indexOf('雨') > 0}}
+    <div id="rain"></div>
+    {{?}}
+    <div id="text2">
+    <p id="date1">{{=it.weather['date']}}，</p>
+    <p id="line1">你乘上离家的火车，告别亲人，第一次来到南邮。</p>
+    <p id="weather1">那天{{=it.weather['weather1']}}， 刮着{{=it.weather['wind']}}。</p>
+    </div>
+</div>
+
+<div class="page page3">
+<div id="big_sun"></div>
+<div id="army"></div>
+<div id="text3">
+    <p id="remember">还记得军训的日子吗？</p>
+    <p id="sound">太阳再大，也大不过我们的嗓门。</p>
+    <p id="happiness">最幸福的是，</p>
+    {{? it.zf_info['gender'] == '男'}}
+    <p id="first">第一次看到她，才发现原来一个人穿迷彩服可以那么好看。</p>
+    {{??}}
+    <p id="first">第一次看到他，才发现原来一个人穿迷彩服可以那么好看。</p>
+    {{?}}
+
+    {{? it['zf_data']['analysis']['english_class_a']}}
+    <p id="eclass">那之后的英语分班考，你被分到了A班。</p>
+    {{??}}
+    <p id="eclass">那之后的英语分班考，你被分到了B班。</p>
+    {{?}}
+    </div>
+</div>
+
+<div class="page page4">
+    <div id="blackboard"></div>
+    <div id="classroom"></div>
+    <div id="room_id">{{=it['zf_data']['analysis']['first_course']['course_classroom']}}</div>
+    <div id="text4">
+    <p id="room_text">那天，你早早到了教室，</p>
+    <p id="course">大学第一堂课是{{=it['zf_data']['analysis']['first_course']['course_name']}}</p>
+    {{? it.fc }}
+        {{? it.first_course_failing }}
+        <p id="score">这门课你最终得到了{{=it.first_course_score}}分，<br>要加油了哦~</p>
+        {{??}}
+        <p id="score">这门课你最终得到了{{=it.first_course_score}}分。</p>
+        {{?}}
+    {{??}}
+    <p id="score">这门课你最终得到了{{=it.first_course_score}}。</p>
+    {{?}}
+    </div>
+</div>
+
+<div class="page page5">
+    <div class="paper_left" id="paper_left1"></div>
+    <div class="paper_left" id="paper_left2"></div>
+    <div class="paper_left" id="paper_left3"></div>
+    <div class="paper_left" id="paper_left4"></div>
+    <div class="paper_left" id="paper_left5"></div>
+    <div class="paper_right" id="paper_right1"></div>
+    <div class="paper_right" id="paper_right2"></div>
+    <div class="paper_right" id="paper_right3"></div>
+    <div class="paper_right" id="paper_right4"></div>
+    <div class="paper_right" id="paper_right5"></div>
+    <div id="stage"></div>
+    <div id="no1"></div>
+    <div id="text5">
+    <p id="total_exam">奖励下自己吧！<br>到现在为止你总共考了{{=it['zf_data']['analysis']['examed_courses_count']}}门试，</p>
+    {{? it.failed_courses_count > 0}}
+    <p id="fail_num">挂过{{=it.failed_courses_count}}门课，</p>
+    {{??}}
+    <p id="fail_num">而且从来都没有挂过科哦~</p>
+    {{?}}
+    <p id="highest">最高的 {{=it['zf_data']['analysis']['highest_course']['name']}}，<span id="days_num">居然</span>得到了{{=it['zf_data']['analysis']['highest_course']['score']}}分。</p>
+    </div>
+</div>
+
+<div class="page page6">
+<div id="rainbow"></div>
+<div id="library"></div>
+
+    {{? it['lib_data']['analysis']['first_borrow_book']}}
+    <div id="book"></div>
+<div id="text6">
+    <p id="borrow_date">{{=it.first_borrow_date}}</p>
+    <p id="book_name">你在图书馆借了一本《{{=it['lib_data']['analysis']['first_borrow_book'][1]}}》</p>
+        {{? it['lib_data']['analysis']['first_borrow_book_days'] < 1}}
+        <p id="borrow_days">看了它一天都不到</p>
+        {{??}}
+        <p id="borrow_days">看了它{{=it['lib_data']['analysis']['first_borrow_book_days']}}天。</p>
+        {{?}}
+        </div>
+    {{??}}
+    <div id="text6">
+    <p id="never_borrow">你还从来没去图书馆借过书，图书馆很大，总有你想看的书。</p>
+</div>
+    {{?}}
+    </div>
+</div>
+
+{{? it['lib_data']['analysis']['first_borrow_book']}}
+<div class="page page7">
+{{? it.zf_info['gender'] == '男'}}
+    <div id="man"></div>
+    {{??}}
+    <div id="girl"></div>
+    {{?}}
+<div id="favor_book"></div>
+<div id="wallet"></div>
+<div id="coin"></div>
+<div id="cash"></div>
+<div id="text7">
+    <p id="favor_book_name">我猜<br><span id="days_num">&nbsp;&nbsp;&nbsp;《{{=it['lib_data']['analysis']['most_borrow_book']['name']}}》</span><br>是你最喜欢的一本书了，</p>
+    <p id="borrow_times">你一共借过它{{=it['lib_data']['analysis']['most_borrow_book']['times']}}次，在你身边待了{{=it['lib_data']['analysis']['most_borrow_book']['days']}}天。</p>
+    <p id="payment">最多为《{{=it['lib_data']['analysis']['most_fine_book']['name']}}》交过{{=it['lib_data']['analysis']['most_fine_book']['payment']}}元的罚款</p>
+</div>
+</div>
+{{??}}
+{{?}}
+
+<div class="page page8">
+<div id="desk"></div>
+<div id="guy"></div>
+
+    {{? it['lib_data']['analysis']['first_comment']}}
+    <div id="text8">
+    <p id="comment_time">{{=it.first_comment_time}}，</p>
+    <p id="comment_book_name">你在《{{=it['lib_data']['analysis']['first_comment'][0]}}》留下了评论：</p>
+    <p id="comment_line">“<span id="days_num">{{=it['lib_data']['analysis']['first_comment'][2]}}</span>”</p>
+    </div>
+    {{??}}
+    <div id="text8">
+    <p id="never_comment">你还从来没有给书留下过书评，快去写点什么把！</p>
+    <p id="discover">图书馆系统还有很多功能等着你去发掘哦~</p>
+    </div>
+    {{?}}
+</div>
+
+<div class="page page99">
+<div id="sandclock"></div>
+<div id="students"></div>
+<div id="graduates"></div>
+<div id="text99">
+    <p id="text99_line1"><span id="days_num">逝者，如斯！</span></p>
+    <p id="text99_line2">四年的大学，</p>
+    <p id="text99_line3">却经不起几次翻动。<br></p>
+    <p id="text99_line4">愿你正走在心想的轨迹上，</p>
+    <p id="text99_line5">不偏不倚。</p>
+
+   </div>
+   <div id="bottom_text">
+    <p id="text99_line6">以此献给我最好的时光</p>
+    <p id="text99_line7">jerrypy</p>
+    </div>
+    <button class="btn btn-success" id="about_button" onclick="window.location.href='about';">关于</button>
+
+</div>
+{% endraw %}
+ </script>
+{% block scripts%}
+{{super()}}
+<script src="http://static.jerrywin.com/youji/js/doT.min.js"></script>
+<script src="http://static.jerrywin.com/youji/js/moment.min.js"></script>
+<script src="http://static.jerrywin.com/youji/js/preloader.js"></script>
+<script src="http://static.jerrywin.com/youji/js/sparkle.js"></script>
+<script src="http://static.jerrywin.com/youji/js/sweetalert.min.js"></script>
+<script src="http://static.jerrywin.com/youji/js/iSlider.js"></script>
+<script src="http://static.jerrywin.com/youji/js/main.js"></script>
+
+
+{% endblock %}
+{% endblock %}
+

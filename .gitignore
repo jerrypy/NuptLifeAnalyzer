@@ -1,0 +1,5 @@
+.idea/*
+*.pyc
+*.pyo
+app_config.py
+config.py
